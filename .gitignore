@@ -1,0 +1,11 @@
+/coverage/
+/docs/
+/lib/
+/bin/
+/.shards/
+/.env
+/bc_flags
+*.o
+*.a
+/mpngin
+/mpngin.dwarf
