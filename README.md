@@ -1,4 +1,4 @@
-# MPNG.IN
+# MPNG.IN [![Build Status](https://travis-ci.org/thewalkingtoast/mpngin.svg?branch=master)](https://travis-ci.org/thewalkingtoast/mpngin)
 
 A simple and fast URL shortener with built in stats. Requires Redis and assumes it is local for lowest possible latency.
 
