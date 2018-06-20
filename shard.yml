@@ -26,6 +26,6 @@ targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 0.24.2
+crystal: 0.25.0
 
 license: MIT

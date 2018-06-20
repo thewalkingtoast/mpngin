@@ -10,11 +10,11 @@ shards:
 
   icr:
     github: crystal-community/icr
-    commit: a0fe31a053a16f6cfbce79c4819f7166cf2f8e8d
+    commit: c7679f4471e0baf3e232b559c1880b28da27eba9
 
   kemal:
     github: kemalcr/kemal
-    version: 0.22.0
+    version: 0.23.0
 
   kilt:
     github: jeromegn/kilt
