@@ -1,5 +1,5 @@
 name: mpngin
-version: 0.1.0
+version: 0.2.0
 
 authors:
   - Adam Radabaugh <adam@mediaping.net>
@@ -11,7 +11,6 @@ dependencies:
     github: kemalcr/kemal
   redis:
     github: stefanwille/crystal-redis
-    version: ~> 1.10.1
   
 development_dependencies:
   coverage:
@@ -26,6 +25,6 @@ targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 0.25.0
+crystal: 0.25.1
 
 license: MIT

@@ -3,7 +3,7 @@ require "spec-kemal"
 require "../src/mpngin"
 
 def make_redis
-  redis_db = ENV.fetch("REDIS_TEST_DATABASE", ENV.fetch("REDIS_DATABASE"))
+  redis_db = ENV.fetch("REDIS_TEST_DATABASE", ENV.fetch("REDIS_DATABASE")).to_i
   Redis.new(database: redis_db)
 end
 
