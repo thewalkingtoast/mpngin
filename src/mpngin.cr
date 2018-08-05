@@ -54,6 +54,11 @@ module Mpngin
     env.redirect FALLBACK_URL
   end
 
+  get "/health_check" do |env|
+    env.response.content_type = "text/plain; charset=utf-8"
+    "I am a-okay."
+  end
+
   post "/application" do |env|
     authorized = Auth.secret_authorized?(env.request)
     unless authorized
