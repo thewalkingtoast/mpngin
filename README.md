@@ -52,7 +52,7 @@ http://localhost:3000/541450
 ```sh
 ➜ curl "http://localhost:3000/541450/stats" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
-     -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8'
+     -H 'Content-Type: text/plain; charset=utf-8'
 
 # Request count response
 1337
