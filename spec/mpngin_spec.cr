@@ -10,6 +10,15 @@ describe "Mpngin" do
     response.headers["location"].should eq(ENV["FALLBACK_URL"])
   end
 
+  it "responds to a basic health check" do
+    # Make the request
+    get "/health_check"
+
+    response.status_code.should eq(200)
+    response.content_type.should eq("text/plain")
+    response.body.should eq("I am a-okay.")
+  end
+
   describe "making a new downstream application" do
     context "with valid secret authorization" do
       it "generates and registers an application key" do
