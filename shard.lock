@@ -8,13 +8,17 @@ shards:
     github: gdotdesign/cr-dotenv
     version: 0.1.0
 
+  exception_page:
+    github: crystal-loot/exception_page
+    version: 0.1.1
+
   icr:
     github: crystal-community/icr
     commit: c7679f4471e0baf3e232b559c1880b28da27eba9
 
   kemal:
     github: kemalcr/kemal
-    version: 0.23.0
+    version: 0.24.0
 
   kilt:
     github: jeromegn/kilt
