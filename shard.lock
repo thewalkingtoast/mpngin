@@ -2,7 +2,7 @@ version: 1.0
 shards:
   coverage:
     github: anykeyh/crystal-coverage
-    commit: af5246dde152b6e42352ce6e759bb07e9bed09ed
+    commit: 89d67bdc205206c8d395ef55c8f479ee73f244d2
 
   dotenv:
     github: gdotdesign/cr-dotenv
@@ -14,11 +14,11 @@ shards:
 
   icr:
     github: crystal-community/icr
-    commit: c7679f4471e0baf3e232b559c1880b28da27eba9
+    commit: a0a5546e0e566891e5ce221313cb19995d0a643f
 
   kemal:
     github: kemalcr/kemal
-    version: 0.24.0
+    version: 0.25.0
 
   kilt:
     github: jeromegn/kilt
@@ -34,7 +34,7 @@ shards:
 
   redis:
     github: stefanwille/crystal-redis
-    version: 2.0.0
+    version: 2.1.1
 
   spec-kemal:
     github: kemalcr/spec-kemal
