@@ -9,3 +9,4 @@
 *.a
 /mpngin
 /mpngin.dwarf
+.crystal
