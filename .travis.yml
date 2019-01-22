@@ -6,7 +6,6 @@ crystal:
   - latest
   
 script:
-  - crystal spec
   - ./bin/crystal-coverage spec/mpngin_spec.cr
 
 services: redis-server
