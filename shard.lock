@@ -2,7 +2,7 @@ version: 1.0
 shards:
   coverage:
     github: anykeyh/crystal-coverage
-    commit: 475de6290ff2eed5de3f0c826a21610fd57a6f90
+    commit: a26f386780123beee890ad93b71fd9f9ecbe335a
 
   dotenv:
     github: gdotdesign/cr-dotenv
@@ -10,7 +10,7 @@ shards:
 
   exception_page:
     github: crystal-loot/exception_page
-    version: 0.1.1
+    version: 0.1.2
 
   icr:
     github: crystal-community/icr
