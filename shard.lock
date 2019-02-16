@@ -6,7 +6,7 @@ shards:
 
   dotenv:
     github: gdotdesign/cr-dotenv
-    version: 0.1.0
+    version: 0.2.0
 
   exception_page:
     github: crystal-loot/exception_page
@@ -18,7 +18,7 @@ shards:
 
   kemal:
     github: kemalcr/kemal
-    version: 0.25.1
+    version: 0.25.2
 
   kilt:
     github: jeromegn/kilt
