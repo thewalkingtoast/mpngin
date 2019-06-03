@@ -71,6 +71,13 @@ KEMAL_ENV=test ./bin/crystal-coverage spec/mpngin_spec.cr
 open coverage/index.html
 ```
 
+## Static Analysis
+
+To run static anaylis checks, use locally installed [Ameba](https://github.com/veelenga/ameba) (comes with `shards install`):
+```
+./bin/ameba
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/thewalkingtoast/mpngin/fork )

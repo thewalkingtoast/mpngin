@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  ameba:
+    github: veelenga/ameba
+    version: 0.9.2
+
   coverage:
     github: anykeyh/crystal-coverage
     commit: a26f386780123beee890ad93b71fd9f9ecbe335a

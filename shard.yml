@@ -13,6 +13,8 @@ dependencies:
     github: stefanwille/crystal-redis
   
 development_dependencies:
+  ameba:
+    github: veelenga/ameba
   coverage:
     github: anykeyh/crystal-coverage
   icr:

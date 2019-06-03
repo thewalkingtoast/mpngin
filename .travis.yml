@@ -7,5 +7,6 @@ crystal:
   
 script:
   - ./bin/crystal-coverage spec/mpngin_spec.cr
+  - ./bin/ameba
 
 services: redis-server
