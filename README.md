@@ -73,7 +73,7 @@ open coverage/index.html
 
 ## Static Analysis
 
-To run static anaylis checks, use locally installed [Ameba](https://github.com/veelenga/ameba) (comes with `shards install`):
+To run static analysis checks, use locally installed [Ameba](https://github.com/veelenga/ameba) (comes with `shards install`):
 ```
 ./bin/ameba
 ```
