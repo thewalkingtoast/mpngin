@@ -34,7 +34,7 @@ shards:
 
   redis:
     github: stefanwille/crystal-redis
-    version: 2.1.1
+    version: 2.2.0
 
   spec-kemal:
     github: kemalcr/spec-kemal
