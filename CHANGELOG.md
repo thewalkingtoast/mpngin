@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.4]
+### Changed
+- Update to Crystal 0.29.0
+- Update ameba to `0.10.0`
+- Update crystal-coverage to `865383b3`
+- Update icr to `1719a1b3`
+- Update crystal-redis to `2.2.1`
+
 ## [0.5.3]
 ### Changed
 - Update to Crystal 0.28.0
