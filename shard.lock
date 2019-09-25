@@ -2,7 +2,7 @@ version: 1.0
 shards:
   ameba:
     github: veelenga/ameba
-    version: 0.10.0
+    version: 0.10.1
 
   coverage:
     github: anykeyh/crystal-coverage
@@ -10,7 +10,7 @@ shards:
 
   dotenv:
     github: gdotdesign/cr-dotenv
-    version: 0.2.0
+    version: 0.3.1
 
   exception_page:
     github: crystal-loot/exception_page
@@ -22,7 +22,7 @@ shards:
 
   kemal:
     github: kemalcr/kemal
-    version: 0.25.2
+    version: 0.26.0
 
   kilt:
     github: jeromegn/kilt
@@ -38,7 +38,7 @@ shards:
 
   redis:
     github: stefanwille/crystal-redis
-    version: 2.2.1
+    version: 2.3.0
 
   spec-kemal:
     github: kemalcr/spec-kemal
