@@ -4,9 +4,12 @@ language: crystal
 
 crystal:
   - latest
-  
+
+install:
+  - shards install
+
 script:
-  - ./bin/crystal-coverage spec/mpngin_spec.cr
-  - ./bin/ameba
+  - crystal bin/crystal-coverage spec/mpngin_spec.cr
+  - crystal bin/ameba
 
 services: redis-server
