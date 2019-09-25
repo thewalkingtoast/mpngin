@@ -1,11 +1,12 @@
 require "dotenv"
+
+Dotenv.load
+
 require "json"
 require "kemal"
 require "redis"
 
 require "./mpngin/*"
-
-Dotenv.load
 
 module Mpngin
   FALLBACK_URL = ENV["FALLBACK_URL"].to_s
