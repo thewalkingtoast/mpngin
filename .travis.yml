@@ -9,7 +9,7 @@ install:
   - shards install
 
 script:
-  - crystal bin/crystal-coverage spec/mpngin_spec.cr
-  - crystal bin/ameba
+  - ./bin/crystal-coverage spec/mpngin_spec.cr
+  - ./bin/ameba
 
 services: redis-server
