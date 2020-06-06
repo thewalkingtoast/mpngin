@@ -67,6 +67,143 @@ describe "Mpngin" do
     end
   end
 
+  describe "generating a link report" do
+    context "as HTML" do
+      context "without valid authorization" do
+        it "renders 401 not authorized" do
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/html"
+
+          # Make the request
+          get("/report.html", headers: headers)
+
+          # Assert the response is a not authorized response
+          response.status_code.should eq(401)
+          response.body.should eq("Not authorized")
+        end
+      end
+
+      context "with valid authorization" do
+        it "renders an HTML report page" do
+          # Ensure the short code exists in Redis
+          short_code = "abc123"
+          final_url = "https://foobarbatz.com"
+          redis = make_redis
+          request_count = 0
+          redis.set("#{short_code}:url", final_url)
+          redis.set("#{short_code}:requests", request_count)
+
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/html"
+          headers["Authorization"] = "bearer #{ENV["SECRET_TOKEN"]}"
+
+          # Make the request
+          get("/report.html", headers: headers)
+
+          response.status_code.should eq(200)
+          response.content_type.should eq("text/html")
+
+          response_body = response.body.strip
+          response_body.should contain("<!doctype html>")
+          response_body.should contain(host.to_s)
+          response_body.should contain(short_code.to_s)
+          response_body.should contain(final_url.to_s)
+          response_body.should contain(request_count.to_s)
+        end
+      end
+    end
+
+    context "as CSV" do
+      context "without valid authorization" do
+        it "renders 401 not authorized" do
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/html"
+
+          # Make the request
+          get("/report.html", headers: headers)
+
+          # Assert the response is a not authorized response
+          response.status_code.should eq(401)
+          response.body.should eq("Not authorized")
+        end
+      end
+
+      context "with valid authorization" do
+        it "renders a CSV for download" do
+          # Ensure the short code exists in Redis
+          short_code = "abc123"
+          final_url = "https://foobarbatz.com"
+          redis = make_redis
+          request_count = 0
+          redis.set("#{short_code}:url", final_url)
+          redis.set("#{short_code}:requests", request_count)
+
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/csv"
+          headers["Authorization"] = "bearer #{ENV["SECRET_TOKEN"]}"
+
+          # Make the request
+          get("/report.csv", headers: headers)
+
+          response.status_code.should eq(200)
+          response.content_type.should eq("application/octet-stream")
+          response.headers["Content-Disposition"].should eq("attachment;filename=#{csv_report_name}.csv")
+        end
+      end
+    end
+
+    context "as JSON" do
+      context "without valid authorization" do
+        it "renders 401 not authorized" do
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/html"
+
+          # Make the request
+          get("/report.html", headers: headers)
+
+          # Assert the response is a not authorized response
+          response.status_code.should eq(401)
+          response.body.should eq("Not authorized")
+        end
+      end
+
+      context "with valid authorization" do
+        it "renders a JSON payload" do
+          # Ensure the short code exists in Redis
+          short_code = "abc123"
+          final_url = "https://foobarbatz.com"
+          redis = make_redis
+          request_count = 0
+          redis.set("#{short_code}:url", final_url)
+          redis.set("#{short_code}:requests", request_count)
+
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "application/json"
+          headers["Authorization"] = "bearer #{ENV["SECRET_TOKEN"]}"
+
+          # Make the request
+          get("/report.json", headers: headers)
+
+          response.status_code.should eq(200)
+          response.content_type.should eq("application/json")
+          response.body.should eq(
+            [{
+              "short_link":    "#{host}/#{short_code}",
+              "expanded_link": final_url,
+              "request_count": request_count.to_s,
+            }].to_json
+          )
+        end
+      end
+    end
+  end
+
   describe "making a new shortened URL request" do
     context "without valid authorization" do
       it "renders 401 not authorized" do

@@ -26,6 +26,14 @@ def test_app_key
   "93706092ace50842de4b33cd1a7b3aec"
 end
 
+def host
+  ENV["SHORT_URL"]
+end
+
+def csv_report_name
+  ENV["LINK_REPORT_CSV_NAME"]
+end
+
 Spec.before_each do
   flush_redis
   register_test_app

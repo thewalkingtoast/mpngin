@@ -9,6 +9,7 @@ require "redis"
 require "./mpngin/constants"
 require "./mpngin/version"
 require "./mpngin/auth"
+require "./mpngin/report"
 
 module Mpngin
   get "/" do |env|
@@ -39,6 +40,35 @@ module Mpngin
     env.response.status_code = 201
     env.response.content_type = "text/plain; charset=utf-8"
     app_key
+  end
+
+  get "/report.:format" do |env|
+    authorized = Auth.secret_authorized?(env.request)
+    unless authorized
+      halt env, status_code: 401, response: "Not authorized"
+    end
+
+    report = Report.new
+    format = (env.params.url["format"] || "json").to_s.strip.downcase
+
+    case format
+    when "csv"
+      env.response.status_code = 200
+      env.response.content_type = "application/octet-stream; charset=utf-8"
+      env.response.headers.add("Content-Disposition", "attachment;filename=#{LINK_REPORT_CSV_NAME}.csv")
+
+      report.to_csv
+    when "html"
+      # ameba:disable Lint/UselessAssign
+      data = report.call
+
+      render "src/views/report.ecr", "src/views/layouts/layout.ecr"
+    else
+      env.response.status_code = 200
+      env.response.content_type = "application/json"
+
+      report.call.to_json
+    end
   end
 
   post "/" do |env|
