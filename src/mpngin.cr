@@ -95,5 +95,5 @@ module Mpngin
   end
 
   serve_static false
-  Kemal.run
+  Kemal.run(port: PORT)
 end
