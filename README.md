@@ -52,11 +52,49 @@ http://localhost:3000/541450
 ```sh
 ➜ curl "http://localhost:3000/541450/stats" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
-     -H 'Content-Type: text/plain; charset=utf-8'
+     -H 'Accept: text/plain'
 
 # Request count response
 1337
 ```
+
+## Link Report
+
+MPNGIN can generate a link report in JSON, CSV, or HTML format. Use your `SECRET_TOKEN` to request the report endoint in which ever format you need:
+
+```sh
+# For JSON:
+➜ curl "http://localhost:3000/report.json" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+
+# Response
+[{"short_link":...}]
+
+# For HTML:
+➜ curl "http://localhost:3000/report.html" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+
+# Response
+<!doctype html>
+<html lang="en">
+...
+
+# For CSV:
+➜ curl "http://localhost:3000/report.csv" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+
+# Response
+"Short Link","Expanded Link","Request Count"
+"..."
+```
+
+#### HTML Report Customization
+
+MPNGIN uses ECR to generate a plain table styled by [Bootstrap](https://getbootstrap.com). You can customize the layout (`src/views/layouts/layout.ecr`) or the table itself (`src/views/report.ecr`).
+
+#### CSV Filename Customization
+
+You can change the file name provided for the downloaded CSV by setting `LINK_REPORT_CSV_NAME` ENV variable (without extension). See the `env.sample` file.
 
 ## Testing
 
@@ -70,6 +108,8 @@ For coverage:
 KEMAL_ENV=test ./bin/crystal-coverage spec/mpngin_spec.cr
 open coverage/index.html
 ```
+
+NOTE: `crystal-coverage` generates false positives and is not recommended currently.
 
 ## Static Analysis
 
