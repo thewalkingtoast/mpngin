@@ -54,8 +54,10 @@ module Mpngin
       key_available = redis.exists(key) == 0
     end
 
-    redis.set("#{key}:url", redirect_url.strip)
-    redis.set("#{key}:requests", 0)
+    redis.mset({
+      "#{key}:url"      => redirect_url.strip,
+      "#{key}:requests" => 0,
+    })
 
     env.response.status_code = 201
     env.response.content_type = "text/plain; charset=utf-8"
