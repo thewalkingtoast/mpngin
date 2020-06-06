@@ -9,7 +9,7 @@ install:
   - shards install
 
 script:
-  - ./bin/crystal-coverage spec/mpngin_spec.cr
+  - KEMAL_ENV=test cystal spec
   - ./bin/ameba
 
 services: redis-server
