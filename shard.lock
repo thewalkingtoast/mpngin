@@ -2,27 +2,27 @@ version: 1.0
 shards:
   ameba:
     github: veelenga/ameba
-    version: 0.10.1
+    version: 0.12.1
 
   coverage:
     github: anykeyh/crystal-coverage
-    commit: 865383b31c51130612a9f6900a9666bcbfe9a426
+    commit: e781f8c70812c9dc4d5bf1d1e396e1f5c9ef1051
 
   dotenv:
     github: gdotdesign/cr-dotenv
-    version: 0.3.1
+    version: 0.7.0
 
   exception_page:
     github: crystal-loot/exception_page
-    version: 0.1.2
+    version: 0.1.4
 
   icr:
     github: crystal-community/icr
-    commit: 1719a1b32ca0be34e29efad84e8b5f6724aa1292
+    commit: 7da354f5c0a356aee77e68fc63c87e2ad35da7fb
 
   kemal:
     github: kemalcr/kemal
-    version: 0.26.0
+    version: 0.26.1
 
   kilt:
     github: jeromegn/kilt
@@ -36,9 +36,13 @@ shards:
     github: luislavena/radix
     version: 0.3.9
 
+  readline:
+    github: crystal-lang/crystal-readline
+    commit: 0fb7d186da8e1b157998d98d1c96e99699b791eb
+
   redis:
     github: stefanwille/crystal-redis
-    version: 2.3.0
+    version: 2.6.0
 
   spec-kemal:
     github: kemalcr/spec-kemal

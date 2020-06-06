@@ -11,6 +11,7 @@ dependencies:
     github: kemalcr/kemal
   redis:
     github: stefanwille/crystal-redis
+    version: ~> 2.6.0
   
 development_dependencies:
   ameba:
@@ -27,6 +28,6 @@ targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 0.31.0
+crystal: 0.34.0
 
 license: MIT
