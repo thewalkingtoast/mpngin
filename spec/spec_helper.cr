@@ -1,10 +1,13 @@
+require "dotenv"
+
+Dotenv.load(filename: ".env.test")
+
 require "spec"
 require "spec-kemal"
 require "../src/mpngin"
 
 def make_redis
-  redis_db = ENV.fetch("REDIS_TEST_DATABASE", ENV.fetch("REDIS_DATABASE")).to_i
-  Redis.new(database: redis_db)
+  Redis.new(database: ENV["REDIS_DATABASE"].to_i)
 end
 
 def flush_redis
