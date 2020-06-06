@@ -26,8 +26,14 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    app_key = Random.new.hex(16)
+    key_available = false
     redis = Redis.new(database: REDIS_DB)
+
+    until key_available
+      app_key = Random.new.hex(16)
+      key_available = redis.exists(app_key) == 0
+    end
+
     redis.set("#{app_key}:application", 1)
 
     env.response.status_code = 201
