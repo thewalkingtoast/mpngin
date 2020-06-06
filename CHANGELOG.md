@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1]
+### Features
+
+- Add Link Report endpoint in multiple formats (https://github.com/thewalkingtoast/mpngin#link-report)
+
+### Bugfixes
+
+- Ensure generated application keys are unique
+
+### Improvements
+
+- Use `mset` over multiple `set` calls when making a link
+- Use a specific `.env` file for testing
+- Discourage use of `crystal-coverage`
+- Allow PORT to be set in the .env file
+- README improvements
+
+### Dependencies
+
+- Update to Crystal to `0.34.0`
+- Update ameba to `0.12.1`
+- Update cr-dotenv to `0.7.0`
+- Update exception-page to `0.1.4`
+- Update icr to `7da354f5c0a356aee77e68fc63c87e2ad35da7fb`
+- Update kemal to `0.26.1`
+- Update crystal-redis to `2.6.0`
+
 ## [0.5.5]
 ### Changed
 - Update to Crystal `0.31.0`
