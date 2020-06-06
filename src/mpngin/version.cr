@@ -1,3 +1,3 @@
 module Mpngin
-  VERSION = "0.5.5"
+  VERSION = "0.7.2"
 end
