@@ -7,19 +7,26 @@ module Mpngin
     end
 
     def call
-      # ameba:disable Lint/UselessAssign
-      _cursor, short_link_keys = redis_client.scan(0, "*:url")
+      cursor = "0"
 
-      @result = short_link_keys.as(Array(Redis::RedisValue)).map do |key|
-        # ameba:disable Lint/UselessAssign
-        request_key, _namespace = key.as(String).split(":")
+      loop do
+        cursor, short_link_keys = redis_client.scan(cursor, "*:url")
 
-        {
-          "short_link"    => "#{SHORT_URL}/#{request_key}",
-          "expanded_link" => redis_client.get("#{request_key}:url"),
-          "request_count" => redis_client.get("#{request_key}:requests").to_s,
-        }
+        short_link_keys.as(Array(Redis::RedisValue)).each do |key|
+          # ameba:disable Lint/UselessAssign
+          request_key, _namespace = key.as(String).split(":")
+
+          @result << {
+            "short_link"    => "#{SHORT_URL}/#{request_key}",
+            "expanded_link" => redis_client.get("#{request_key}:url"),
+            "request_count" => redis_client.get("#{request_key}:requests").to_s,
+          }
+        end
+
+        break if cursor == "0"
       end
+
+      @result
     end
 
     def to_csv
