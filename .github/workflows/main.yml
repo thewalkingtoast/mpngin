@@ -1,0 +1,36 @@
+name: Crystal CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    container:
+      image: crystallang/crystal
+    
+    services:
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .env
+      run: cp .env.ci .env.test
+    - name: Install dependencies
+      run: shards install
+    - name: Static analysis
+      run: ./bin/ameba
+    - name: Run tests
+      run: KEMAL_ENV=test crystal spec
