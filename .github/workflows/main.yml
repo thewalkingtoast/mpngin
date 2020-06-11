@@ -11,9 +11,6 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    container:
-      image: crystallang/crystal
-    
     services:
       redis:
         image: redis
@@ -26,6 +23,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Setup Crystal 0.34.0
+      uses: oprypin/install-crystal@v1
+      with:
+        crystal: 0.34.0
     - name: Setup .env
       run: cp .env.ci .env.test
     - name: Install dependencies
