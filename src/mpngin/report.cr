@@ -42,7 +42,7 @@ module Mpngin
     end
 
     private def redis_client
-      @redis_client ||= Redis.new(database: REDIS_DB)
+      @redis_client ||= Redis.new(url: REDIS_URL)
     end
   end
 end

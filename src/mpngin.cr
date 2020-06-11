@@ -28,7 +28,7 @@ module Mpngin
     end
 
     key_available = false
-    redis = Redis.new(database: REDIS_DB)
+    redis = Redis.new(url: REDIS_URL)
 
     until key_available
       app_key = Random.new.hex(16)
@@ -77,7 +77,7 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    redis = Redis.new(database: REDIS_DB)
+    redis = Redis.new(url: REDIS_URL)
     key_available = false
     redirect_url = env.params.body.fetch("redirect_url", nil)
 
@@ -101,7 +101,7 @@ module Mpngin
   end
 
   get "/:short_code" do |env|
-    redis = Redis.new(database: REDIS_DB)
+    redis = Redis.new(url: REDIS_URL)
     key = env.params.url["short_code"].strip
     result_url = redis.get("#{key}:url")
 
@@ -120,7 +120,7 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    redis = Redis.new(database: REDIS_DB)
+    redis = Redis.new(url: REDIS_URL)
     key = env.params.url["short_code"].strip
     result_url = redis.get("#{key}:url")
     env.response.content_type = "text/plain; charset=utf-8"

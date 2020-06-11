@@ -7,7 +7,7 @@ require "spec-kemal"
 require "../src/mpngin"
 
 def make_redis
-  Redis.new(database: ENV["REDIS_DATABASE"].to_i)
+  Redis.new(url: ENV["REDIS_URL"].to_s)
 end
 
 def flush_redis

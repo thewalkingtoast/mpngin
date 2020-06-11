@@ -12,7 +12,7 @@ module Mpngin
 
     def self.valid_token?(token : String)
       return false if token.nil?
-      Redis.new(database: REDIS_DB).exists("#{token}:application") == 1
+      Redis.new(url: REDIS_URL).exists("#{token}:application") == 1
     end
 
     def self.valid_token?(token)
