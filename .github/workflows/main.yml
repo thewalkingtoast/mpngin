@@ -28,7 +28,7 @@ jobs:
       with:
         crystal: 0.34.0
     - name: Setup .env
-      run: cp .env.ci .env.test; cp .env.ci .env
+      run: cp .env.test .env
     - name: Install dependencies
       run: shards install
     - name: Static analysis
