@@ -26,10 +26,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Crystal 0.34.0
+    - name: Setup Crystal 0.36.1
       uses: oprypin/install-crystal@v1
       with:
-        crystal: 0.34.0
+        crystal: 0.36.1
     - name: Setup .env
       run: cp .env.test .env
     - name: Install dependencies

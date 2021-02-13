@@ -13,7 +13,6 @@ module Mpngin
         cursor, short_link_keys = redis_client.scan(cursor, "*:url")
 
         short_link_keys.as(Array(Redis::RedisValue)).each do |key|
-          # ameba:disable Lint/UselessAssign
           request_key, _namespace = key.as(String).split(":")
 
           @result << {
