@@ -1,5 +1,5 @@
 name: mpngin
-version: 0.7.2
+version: 0.7.3
 
 authors:
   - Adam Radabaugh <adam@mediaping.net>
@@ -11,16 +11,12 @@ dependencies:
     github: kemalcr/kemal
   redis:
     github: stefanwille/crystal-redis
-    version: ~> 2.6.0
   
 development_dependencies:
   ameba:
     github: veelenga/ameba
-  coverage:
-    github: anykeyh/crystal-coverage
   icr:
     github: crystal-community/icr
-    branch: master
   spec-kemal:
     github: kemalcr/spec-kemal
 
@@ -28,6 +24,6 @@ targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 0.34.0
+crystal: 0.36.1
 
 license: MIT

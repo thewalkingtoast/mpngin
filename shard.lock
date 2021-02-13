@@ -1,50 +1,46 @@
-version: 1.0
+version: 2.0
 shards:
   ameba:
-    github: veelenga/ameba
-    version: 0.12.1
-
-  coverage:
-    github: anykeyh/crystal-coverage
-    commit: e781f8c70812c9dc4d5bf1d1e396e1f5c9ef1051
+    git: https://github.com/veelenga/ameba.git
+    version: 0.13.4
 
   dotenv:
-    github: gdotdesign/cr-dotenv
+    git: https://github.com/gdotdesign/cr-dotenv.git
     version: 0.7.0
 
   exception_page:
-    github: crystal-loot/exception_page
+    git: https://github.com/crystal-loot/exception_page.git
     version: 0.1.4
 
   icr:
-    github: crystal-community/icr
-    commit: 7da354f5c0a356aee77e68fc63c87e2ad35da7fb
+    git: https://github.com/crystal-community/icr.git
+    version: 0.8.0
 
   kemal:
-    github: kemalcr/kemal
-    version: 0.26.1
+    git: https://github.com/kemalcr/kemal.git
+    version: 0.27.0
 
   kilt:
-    github: jeromegn/kilt
+    git: https://github.com/jeromegn/kilt.git
     version: 0.4.0
 
   pool:
-    github: ysbaddaden/pool
+    git: https://github.com/ysbaddaden/pool.git
     version: 0.2.3
 
   radix:
-    github: luislavena/radix
+    git: https://github.com/luislavena/radix.git
     version: 0.3.9
 
   readline:
-    github: crystal-lang/crystal-readline
-    commit: 0fb7d186da8e1b157998d98d1c96e99699b791eb
+    git: https://github.com/crystal-lang/crystal-readline.git
+    version: 0.1.0+git.commit.0fb7d186da8e1b157998d98d1c96e99699b791eb
 
   redis:
-    github: stefanwille/crystal-redis
+    git: https://github.com/stefanwille/crystal-redis.git
     version: 2.6.0
 
   spec-kemal:
-    github: kemalcr/spec-kemal
+    git: https://github.com/kemalcr/spec-kemal.git
     version: 0.5.0
 
