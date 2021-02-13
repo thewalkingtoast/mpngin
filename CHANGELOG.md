@@ -4,8 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.2]
+## [0.7.3]
+### Improvements
+- Add a docker-compose.yml for Redis 6
 
+### Dependencies
+- Update to Crystal `0.36.1`
+- Update ameba to `0.13.4`
+- Update cr-dotenv to `0.7.0`
+- Update kemal to `0.27.0`
+- Update crystal-redis to `2.6.0`
+- Update icr to `0.8.0`
+- Remove crystal-coverage preventing compiling on Crystal `0.36.1`
+
+## [0.7.2]
 ### Bugfixes
 
 - Correctly use cursor when iterating Redis keys via scan().
