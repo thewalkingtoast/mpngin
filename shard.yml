@@ -17,6 +17,7 @@ development_dependencies:
     github: veelenga/ameba
   icr:
     github: crystal-community/icr
+    branch: master
   spec-kemal:
     github: kemalcr/spec-kemal
 
