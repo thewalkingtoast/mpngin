@@ -15,10 +15,21 @@ shards install
 crystal run src/mpngin.cr
 ```
 
-For production, make a release build:
+### Production Use
+
+For production, make a release build with `KEMAL_ENV` uncommented in `.env` and set to `production`:
+
 ```sh
 # Assumes .env file is correctly filled out, including KEMAL_ENV=production
 crystal build --release src/mpngin.cr
+```
+
+The `.env` must accompany the built binary at the same filesystem level. Example production tree:
+
+```
+mpngin
+|_ mpgin (binary)
+|_ .env
 ```
 
 ## Usage
