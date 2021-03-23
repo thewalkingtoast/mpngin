@@ -28,7 +28,7 @@ Creating an short URL and getting the stats require an application key first.
 1) Create an application first:
 
 ```sh
-➜ curl -X "POST" "http://localhost:3000/application" -H "Authorization: bearer <SECRET_TOKEN_HERE>"
+➜ curl -X "POST" "http://localhost:7001/application" -H "Authorization: bearer <SECRET_TOKEN_HERE>"
 
 # New app key response
 d48655ff210c3e9e4ed8f6ad4f1923a3
@@ -38,19 +38,19 @@ d48655ff210c3e9e4ed8f6ad4f1923a3
 `application/x-form-urlencoded` body param named `redirect_url`:
 
 ```sh
-➜ curl -X "POST" "http://localhost:3000/" \
+➜ curl -X "POST" "http://localhost:7001/" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
      -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' \
      --data-urlencode "redirect_url=https://www.nintendo.com"
      
 # Your shiny new shortened redirect URL
-http://localhost:3000/541450
+http://localhost:7001/541450
 ```
 
 3) Get number of requests for this shortened URL:
 
 ```sh
-➜ curl "http://localhost:3000/541450/stats" \
+➜ curl "http://localhost:7001/541450/stats" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
      -H 'Accept: text/plain'
 
@@ -64,14 +64,14 @@ MPNGIN can generate a link report in JSON, CSV, or HTML format. Use your `SECRET
 
 ```sh
 # For JSON:
-➜ curl "http://localhost:3000/report.json" \
+➜ curl "http://localhost:7001/report.json" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
 
 # Response
 [{"short_link":...}]
 
 # For HTML:
-➜ curl "http://localhost:3000/report.html" \
+➜ curl "http://localhost:7001/report.html" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
 
 # Response
@@ -80,7 +80,7 @@ MPNGIN can generate a link report in JSON, CSV, or HTML format. Use your `SECRET
 ...
 
 # For CSV:
-➜ curl "http://localhost:3000/report.csv" \
+➜ curl "http://localhost:7001/report.csv" \
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
 
 # Response
