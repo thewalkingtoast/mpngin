@@ -20,6 +20,8 @@ development_dependencies:
     branch: master
   spec-kemal:
     github: kemalcr/spec-kemal
+  timecop:
+    github: crystal-community/timecop.cr
 
 targets:
   mpngin:

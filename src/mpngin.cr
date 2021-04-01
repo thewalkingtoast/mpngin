@@ -114,6 +114,43 @@ module Mpngin
     end
   end
 
+  get "/:short_code/inspect.:format" do |env|
+    authorized = Auth.authorized?(env.request)
+    unless authorized
+      halt env, status_code: 401, response: "Not authorized"
+    end
+
+    redis = Redis.new(url: REDIS_URL)
+    request_key = env.params.url["short_code"].strip
+    format = (env.params.url["format"] || "json").to_s.strip.downcase
+
+    data = {
+      "short_link"    => "#{SHORT_URL}/#{request_key}",
+      "expanded_link" => redis.get("#{request_key}:url"),
+      "request_count" => redis.get("#{request_key}:requests").to_s,
+      "report_date"   => Time.utc.to_s("%Y-%m-%d %H:%M:%S %:z")
+    }
+
+    case format
+    when "csv"
+      env.response.status_code = 200
+      env.response.content_type = "application/octet-stream; charset=utf-8"
+      env.response.headers.add("Content-Disposition", "attachment;filename=shortlink_#{request_key}.csv")
+
+      CSV.build(quoting: CSV::Builder::Quoting::ALL) do |csv|
+        csv.row "Short Link", "Expanded Link", "Request Count", "Report Date"
+        csv.row data["short_link"], data["expanded_link"], data["request_count"], data["report_date"]
+      end
+    when "html"
+      render "src/views/inspect.ecr", "src/views/layouts/layout.ecr"
+    else
+      env.response.status_code = 200
+      env.response.content_type = "application/json"
+
+      data.to_json
+    end
+  end
+
   get "/:short_code/stats" do |env|
     authorized = Auth.authorized?(env.request)
     unless authorized

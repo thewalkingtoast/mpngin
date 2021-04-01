@@ -69,6 +69,36 @@ http://localhost:7001/541450
 1337
 ```
 
+## Link Inspect
+
+To get more detailed information, you can also inspect a link to get info such as the expanded link and request count with a report timestamp in which ever format you need:
+
+```sh
+# For JSON:
+➜ curl "http://localhost:7001/541450/inspect.json" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+
+# Response
+{"short_link":...}
+
+# For HTML:
+➜ curl "http://localhost:7001/541450/inspect.html" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+
+# Response
+<!doctype html>
+<html lang="en">
+...
+
+# For CSV:
+➜ curl "http://localhost:7001/541450/inspect.csv" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+
+# Response
+"Short Link","Expanded Link","Request Count","Report Date"
+"..."
+```
+
 ## Link Report
 
 MPNGIN can generate a link report in JSON, CSV, or HTML format. Use your `SECRET_TOKEN` to request the report endoint in which ever format you need:

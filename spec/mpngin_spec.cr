@@ -1,4 +1,7 @@
 require "./spec_helper"
+require "timecop"
+
+Timecop.safe_mode = true
 
 describe "Mpngin" do
   it "redirects to ENV['FALLBACK_URL']" do
@@ -406,6 +409,126 @@ describe "Mpngin" do
         response.status_code.should eq(200)
         response.content_type.should eq("text/plain")
         response.body.should eq("¯\\_(ツ)_/¯")
+      end
+    end
+  end
+
+  describe "inspecting a shortened URL" do
+    context "without valid authorization" do
+      ["HTML", "JSON", "CSV"].each do |format|
+        context "as #{format}" do
+          it "renders 401 not authorized" do
+            # Ensure the short code exists in Redis
+            short_code = "abc123"
+            final_url = "https://foobarbatz.com"
+            redis = make_redis
+            redis.set("#{short_code}:url", final_url)
+            redis.set("#{short_code}:requests", 0)
+
+            # Make request
+            get "/#{short_code}/inspect.#{format.downcase}"
+
+            # Assert the response is a not authorized response
+            response.status_code.should eq(401)
+            response.body.should eq("Not authorized")
+          end
+        end
+      end
+    end
+
+    context "with valid authorization" do
+      context "as HTML" do
+        it "renders shortlink details" do
+          # Ensure the short code exists in Redis
+          short_code = "abc123"
+          final_url = "https://foobarbatz.com"
+          request_count = 1337
+
+          redis = make_redis
+          redis.set("#{short_code}:url", final_url)
+          redis.set("#{short_code}:requests", request_count)
+
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/html"
+          headers["Authorization"] = test_app_authorization
+
+          # Make request
+          get("/#{short_code}/inspect.html", headers: headers)
+
+          # Assert the response is valid
+          response.status_code.should eq(200)
+          response.content_type.should eq("text/html")
+
+          response_body = response.body.strip
+          response_body.should contain("<!doctype html>")
+          response_body.should contain(short_code.to_s)
+          response_body.should contain(final_url.to_s)
+          response_body.should contain(request_count.to_s)
+        end
+      end
+
+      context "as CSV" do
+        it "renders shortlink details" do
+          # Ensure the short code exists in Redis
+          short_code = "abc123"
+          final_url = "https://foobarbatz.com"
+          redis = make_redis
+          redis.set("#{short_code}:url", final_url)
+          redis.set("#{short_code}:requests", 1337)
+
+          csv_report_name = "shortlink_#{short_code}"
+
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "text/csv"
+          headers["Authorization"] = test_app_authorization
+
+          # Make request
+          get("/#{short_code}/inspect.csv", headers: headers)
+
+          # Assert the response is valid
+          response.content_type.should eq("application/octet-stream")
+          response.headers["Content-Disposition"].should eq("attachment;filename=#{csv_report_name}.csv")
+        end
+      end
+
+      context "as JSON" do
+        it "renders shortlink details" do
+          # Ensure the short code exists in Redis
+          short_code = "abc123"
+          final_url = "https://foobarbatz.com"
+          request_count = 1337
+
+          redis = make_redis
+          redis.set("#{short_code}:url", final_url)
+          redis.set("#{short_code}:requests", request_count)
+
+          # Setup request headers
+          headers = HTTP::Headers.new
+          headers["Accept"] = "application/json"
+          headers["Authorization"] = test_app_authorization
+
+          time = Time.utc
+          Timecop.freeze(time) do |frozen_time|
+            # Make request
+            get("/#{short_code}/inspect.json", headers: headers)
+
+            # Assert the response is valid
+            response.status_code.should eq(200)
+            response.content_type.should eq("application/json")
+
+            response_body = response.body.strip
+            response.body.should eq(
+              {
+                "short_link":    "#{host}/#{short_code}",
+                "expanded_link": final_url,
+                "request_count": request_count.to_s,
+                "report_date": time.to_s("%Y-%m-%d %H:%M:%S %:z")
+              }.to_json
+            )
+          end
+        end
       end
     end
   end
