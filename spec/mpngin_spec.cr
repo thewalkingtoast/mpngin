@@ -510,7 +510,7 @@ describe "Mpngin" do
           headers["Authorization"] = test_app_authorization
 
           time = Time.utc
-          Timecop.freeze(time) do |frozen_time|
+          Timecop.freeze(time) do
             # Make request
             get("/#{short_code}/inspect.json", headers: headers)
 
@@ -519,7 +519,7 @@ describe "Mpngin" do
             response.content_type.should eq("application/json")
 
             response_body = response.body.strip
-            response.body.should eq(
+            response_body.should eq(
               {
                 "short_link":    "#{host}/#{short_code}",
                 "expanded_link": final_url,
