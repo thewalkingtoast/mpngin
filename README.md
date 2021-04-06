@@ -144,17 +144,6 @@ For spec tests:
 KEMAL_ENV=test crystal spec
 ```
 
-For coverage:
-
-_Note: Not working until https://github.com/anykeyh/crystal-coverage is compatible with Crystal 0.36.1_
-
-```sh
-KEMAL_ENV=test ./bin/crystal-coverage spec/mpngin_spec.cr
-open coverage/index.html
-```
-
-NOTE: `crystal-coverage` generates false positives and is not recommended currently.
-
 ## Static Analysis
 
 To run static analysis checks, use locally installed [Ameba](https://github.com/veelenga/ameba) (comes with `shards install`):
