@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0]
+### Improvements
+- Adds a link inspect endpoint in multiple formats (https://github.com/thewalkingtoast/mpngin#link-inspect):
+    - Simply visit `/inspect.<format>` (where `format` is one of `.json`, `.html`, and `.csv`) to get detailed specs about the link in addition to request count
+- Adds a Dockerfile
+- Removes mention of coverage from README
+- Improves notes about building for production use
+- Aligns suggested default port to `7001`
+
+### Dependencies
+- Update ameba to `0.14.1`
+- Update kemal to `1.0.0`
+- Update icr to `master`
+
 ## [0.7.3]
 ### Improvements
 - Add a docker-compose.yml for Redis 6
