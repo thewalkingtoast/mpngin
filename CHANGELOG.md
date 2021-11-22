@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0]
+### Improvements
+- Make Dockerfile work for Crystal 1.2.0
+- Make Github Actions work for Crystal 1.2.0
+
+### Dependencies
+- Update to Crystal `1.2.0`
+- Update kemal to `1.1.0`
+- Update dotenv to latest `master`
+- Update redis to latest `master`
+- Update ameba to latest `master`
+- Update spec-kemal to latest `master`
+- Update timecop to latest `master`
+
 ## [0.8.0]
 ### Improvements
 - Adds a link inspect endpoint in multiple formats (https://github.com/thewalkingtoast/mpngin#link-inspect):

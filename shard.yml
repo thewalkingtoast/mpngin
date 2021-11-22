@@ -7,26 +7,28 @@ authors:
 dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
+    branch: master
   kemal:
     github: kemalcr/kemal
   redis:
     github: stefanwille/crystal-redis
+    branch: master
   
 development_dependencies:
   ameba:
     github: veelenga/ameba
-  icr:
-    github: crystal-community/icr
     branch: master
   spec-kemal:
     github: kemalcr/spec-kemal
+    branch: master
   timecop:
     github: crystal-community/timecop.cr
+    branch: master
 
 targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 0.36.1
+crystal: 1.2.0
 
 license: MIT

@@ -1,4 +1,4 @@
-FROM crystallang/crystal:0.36.1 AS builder
+FROM crystallang/crystal:1.2.0 AS builder
 
 WORKDIR /app
 
@@ -25,15 +25,14 @@ COPY --from=builder /app/.env .
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y libssl1.1 libevent-2.1-6 && \
-    # Cleanup leftovers
+    apt-get install -y libssl1.1 libevent-2.1-7 && \
     apt-get auto-remove -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     useradd -m app-user && \
     chown -R app-user /home/app-user && \
     echo "PORT=${PORT}" >> .env && \
     chown -R app-user .;
-    
+
 USER app-user
 
 STOPSIGNAL SIGQUIT
