@@ -128,7 +128,7 @@ module Mpngin
       "short_link"    => "#{SHORT_URL}/#{request_key}",
       "expanded_link" => redis.get("#{request_key}:url"),
       "request_count" => redis.get("#{request_key}:requests").to_s,
-      "report_date"   => Time.utc.to_s("%Y-%m-%d %H:%M:%S %:z")
+      "report_date"   => Time.utc.to_s("%Y-%m-%d %H:%M:%S %:z"),
     }
 
     case format

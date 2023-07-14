@@ -524,7 +524,7 @@ describe "Mpngin" do
                 "short_link":    "#{host}/#{short_code}",
                 "expanded_link": final_url,
                 "request_count": request_count.to_s,
-                "report_date": time.to_s("%Y-%m-%d %H:%M:%S %:z")
+                "report_date":   time.to_s("%Y-%m-%d %H:%M:%S %:z"),
               }.to_json
             )
           end

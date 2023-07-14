@@ -11,10 +11,10 @@
   <% data.each_with_index do |row, i| %>
     <tr>
       <th scope="row"><%= (i + 1) %></th>
-	  <td><%= row["short_link"] %></td>
-	  <td><%= row["expanded_link"] %></td>
-	  <td><%= row["request_count"] %></td>
-	</tr>
+      <td><%= row["short_link"] %></td>
+      <td><%= row["expanded_link"] %></td>
+      <td><%= row["request_count"] %></td>
+    </tr>
   <% end %>
   </tbody>
 </table>
