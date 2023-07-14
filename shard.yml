@@ -3,7 +3,7 @@ version: 1.0.0
 
 authors:
   - Adam Radabaugh <adam@mediaping.net>
-  
+
 dependencies:
   dotenv:
     github: gdotdesign/cr-dotenv
@@ -13,11 +13,8 @@ dependencies:
   redis:
     github: stefanwille/crystal-redis
     branch: master
-  
+
 development_dependencies:
-  ameba:
-    github: veelenga/ameba
-    branch: master
   spec-kemal:
     github: kemalcr/spec-kemal
     branch: master
@@ -29,6 +26,6 @@ targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 1.2.2
+crystal: 1.9.0
 
 license: MIT
