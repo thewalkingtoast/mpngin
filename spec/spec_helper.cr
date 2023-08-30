@@ -30,6 +30,10 @@ def host
   ENV["SHORT_URL"]
 end
 
+def hostname
+  URI.parse(host.downcase).normalize.host
+end
+
 def csv_report_name
   ENV["LINK_REPORT_CSV_NAME"]
 end

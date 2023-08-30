@@ -8,7 +8,6 @@
 *.o
 *.a
 /mpngin
-mpngin
 /mpngin.dwarf
-mpngin.dwarf
+/scratch.cr
 .crystal

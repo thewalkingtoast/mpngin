@@ -267,7 +267,7 @@ describe "Mpngin" do
 
           # Setup request headers
           headers = HTTP::Headers.new
-          headers["Accept"] = "text/plain"
+          headers["Accept"] = "text/plain; charset=utf-8"
           headers["Authorization"] = test_app_authorization
           headers["Content-Type"] = "application/x-www-form-urlencoded"
 
@@ -283,11 +283,12 @@ describe "Mpngin" do
           matching.should eq(0)
 
           # Grab short code off of response body.
-          short_key = response.body.split("/").pop
+          short_code = response.body.split("/").pop
+          namespace = "#{hostname}:#{short_code}"
 
           # Assert a key was made with the returned app key
-          redis.get("#{short_key}:url").should eq("https://foobarbatz.com")
-          redis.get("#{short_key}:requests").should eq("0")
+          redis.get("#{namespace}:url").should eq("https://foobarbatz.com")
+          redis.get("#{namespace}:requests").should eq("0")
         end
       end
     end
@@ -298,9 +299,11 @@ describe "Mpngin" do
       # Ensure the short code exists in Redis
       short_code = "abc123"
       final_url = "https://foobarbatz.com"
+      namespace = "#{hostname}:#{short_code}"
+
       redis = make_redis
-      redis.set("#{short_code}:url", final_url)
-      redis.set("#{short_code}:requests", 0)
+      redis.set("#{namespace}:url", final_url)
+      redis.set("#{namespace}:requests", 0)
 
       get "/#{short_code}"
 
@@ -313,9 +316,13 @@ describe "Mpngin" do
       # Ensure the short code exists in Redis
       short_code = "abc123"
       final_url = "https://foobarbatz.com"
+      namespace = "#{hostname}:#{short_code}"
+
       redis = make_redis
-      redis.set("#{short_code}:url", final_url)
-      redis.set("#{short_code}:requests", 0)
+      redis.set("#{namespace}:url", final_url)
+      redis.set("#{namespace}:requests", 0)
+
+      redis.get("#{namespace}:requests").should eq("0")
 
       3.times do |i|
         # Make request
@@ -327,24 +334,26 @@ describe "Mpngin" do
 
         # Assert request count is incremented
         count = i + 1
-        redis.get("#{short_code}:requests").should eq(count.to_s)
+        redis.get("#{namespace}:requests").should eq(count.to_s)
       end
     end
 
-    it "renders unknown text on missing short code" do
+    it "renders 404 on missing short code" do
       # Ensure the short code does not exist in Redis
       short_code = "abc123"
+      namespace = "#{hostname}:#{short_code}"
+
       redis = make_redis
-      redis.del("#{short_code}:url")
-      redis.del("#{short_code}:requests")
+      redis.del("#{namespace}:url")
+      redis.del("#{namespace}:requests")
 
       # Make request
       get "/#{short_code}"
 
       # Assert the response redirects
-      response.status_code.should eq(200)
-      response.content_type.should eq("text/plain")
-      response.body.should eq("¯\\_(ツ)_/¯")
+      response.status_code.should eq(404)
+      response.content_type.should eq("text/html")
+      response.body.should eq("No short link found.")
     end
   end
 
@@ -354,9 +363,11 @@ describe "Mpngin" do
         # Ensure the short code exists in Redis
         short_code = "abc123"
         final_url = "https://foobarbatz.com"
+        namespace = "#{hostname}:#{short_code}"
+
         redis = make_redis
-        redis.set("#{short_code}:url", final_url)
-        redis.set("#{short_code}:requests", 0)
+        redis.set("#{namespace}:url", final_url)
+        redis.set("#{namespace}:requests", 0)
 
         # Make request
         get "/#{short_code}/stats"
@@ -372,9 +383,11 @@ describe "Mpngin" do
         # Ensure the short code exists in Redis
         short_code = "abc123"
         final_url = "https://foobarbatz.com"
+        namespace = "#{hostname}:#{short_code}"
+
         redis = make_redis
-        redis.set("#{short_code}:url", final_url)
-        redis.set("#{short_code}:requests", 1337)
+        redis.set("#{namespace}:url", final_url)
+        redis.set("#{namespace}:requests", 1337)
 
         # Setup request headers
         headers = HTTP::Headers.new
@@ -393,9 +406,11 @@ describe "Mpngin" do
       it "renders unknown text on missing short code" do
         # Ensure the short code exists in Redis
         short_code = "abc123"
+        namespace = "#{hostname}:#{short_code}"
+
         redis = make_redis
-        redis.del("#{short_code}:url")
-        redis.del("#{short_code}:requests")
+        redis.del("#{namespace}:url")
+        redis.del("#{namespace}:requests")
 
         # Setup request headers
         headers = HTTP::Headers.new
@@ -406,9 +421,9 @@ describe "Mpngin" do
         get("/#{short_code}/stats", headers: headers)
 
         # Assert the response redirects
-        response.status_code.should eq(200)
+        response.status_code.should eq(404)
         response.content_type.should eq("text/plain")
-        response.body.should eq("¯\\_(ツ)_/¯")
+        response.body.should eq("No short link found.")
       end
     end
   end
@@ -421,9 +436,11 @@ describe "Mpngin" do
             # Ensure the short code exists in Redis
             short_code = "abc123"
             final_url = "https://foobarbatz.com"
+            namespace = "#{hostname}:#{short_code}"
+
             redis = make_redis
-            redis.set("#{short_code}:url", final_url)
-            redis.set("#{short_code}:requests", 0)
+            redis.set("#{namespace}:url", final_url)
+            redis.set("#{namespace}:requests", 0)
 
             # Make request
             get "/#{short_code}/inspect.#{format.downcase}"
@@ -438,15 +455,16 @@ describe "Mpngin" do
 
     context "with valid authorization" do
       context "as HTML" do
-        it "renders shortlink details" do
+        it "renders short link details" do
           # Ensure the short code exists in Redis
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
+          namespace = "#{hostname}:#{short_code}"
           request_count = 1337
 
           redis = make_redis
-          redis.set("#{short_code}:url", final_url)
-          redis.set("#{short_code}:requests", request_count)
+          redis.set("#{namespace}:url", final_url)
+          redis.set("#{namespace}:requests", request_count)
 
           # Setup request headers
           headers = HTTP::Headers.new
@@ -469,13 +487,15 @@ describe "Mpngin" do
       end
 
       context "as CSV" do
-        it "renders shortlink details" do
+        it "renders short link details" do
           # Ensure the short code exists in Redis
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
+          namespace = "#{hostname}:#{short_code}"
+
           redis = make_redis
-          redis.set("#{short_code}:url", final_url)
-          redis.set("#{short_code}:requests", 1337)
+          redis.set("#{namespace}:url", final_url)
+          redis.set("#{namespace}:requests", 1337)
 
           csv_report_name = "shortlink_#{short_code}"
 
@@ -494,15 +514,16 @@ describe "Mpngin" do
       end
 
       context "as JSON" do
-        it "renders shortlink details" do
+        it "renders short link details" do
           # Ensure the short code exists in Redis
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
+          namespace = "#{hostname}:#{short_code}"
           request_count = 1337
 
           redis = make_redis
-          redis.set("#{short_code}:url", final_url)
-          redis.set("#{short_code}:requests", request_count)
+          redis.set("#{namespace}:url", final_url)
+          redis.set("#{namespace}:requests", request_count)
 
           # Setup request headers
           headers = HTTP::Headers.new
@@ -521,10 +542,11 @@ describe "Mpngin" do
             response_body = response.body.strip
             response_body.should eq(
               {
-                "short_link":    "#{host}/#{short_code}",
                 "expanded_link": final_url,
-                "request_count": request_count.to_s,
                 "report_date":   time.to_s("%Y-%m-%d %H:%M:%S %:z"),
+                "request_count": request_count.to_s,
+                "short_code":    short_code,
+                "short_link":    "https://#{hostname}/#{short_code}",
               }.to_json
             )
           end

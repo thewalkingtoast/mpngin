@@ -4,10 +4,13 @@ Dotenv.load
 
 require "json"
 require "kemal"
-require "redis"
 
 require "./mpngin/constants"
 require "./mpngin/version"
+require "./mpngin/repository"
+
+REPOSITORY = Mpngin::Repository.new
+
 require "./mpngin/auth"
 require "./mpngin/report"
 
@@ -27,19 +30,10 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    key_available = false
-    redis = Redis.new(url: REDIS_URL)
-
-    until key_available
-      app_key = Random.new.hex(16)
-      key_available = redis.exists(app_key) == 0
-    end
-
-    redis.set("#{app_key}:application", 1)
-
     env.response.status_code = 201
     env.response.content_type = "text/plain; charset=utf-8"
-    app_key
+
+    REPOSITORY.store_application
   end
 
   get "/report.:format" do |env|
@@ -65,7 +59,7 @@ module Mpngin
       render "src/views/report.ecr", "src/views/layouts/layout.ecr"
     else
       env.response.status_code = 200
-      env.response.content_type = "application/json"
+      env.response.content_type = "application/json; charset=utf-8"
 
       report.call.to_json
     end
@@ -77,41 +71,31 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    redis = Redis.new(url: REDIS_URL)
-    key_available = false
     redirect_url = env.params.body.fetch("redirect_url", nil)
-
     if redirect_url.nil?
       halt env, status_code: 422, response: "Must provide redirect_url param."
     end
 
-    until key_available
-      key = Random.new.hex(3)
-      key_available = redis.exists(key) == 0
-    end
-
-    redis.mset({
-      "#{key}:url"      => redirect_url.strip,
-      "#{key}:requests" => 0,
-    })
+    short_link_data = REPOSITORY.store_short_link(
+      from: SHORT_URL, to: redirect_url
+    )
 
     env.response.status_code = 201
     env.response.content_type = "text/plain; charset=utf-8"
-    "#{SHORT_URL}/#{key}"
+
+    short_link_data["short_link"]
   end
 
   get "/:short_code" do |env|
-    redis = Redis.new(url: REDIS_URL)
     key = env.params.url["short_code"].strip
-    result_url = redis.get("#{key}:url")
+    data = REPOSITORY.fetch_short_link(key)
 
-    if result_url.nil?
-      env.response.content_type = "text/plain; charset=utf-8"
-      "¯\\_(ツ)_/¯"
-    else
-      redis.incr("#{key}:requests")
-      env.redirect result_url
+    if data.nil?
+      halt env, status_code: 404, response: "No short link found."
     end
+
+    REPOSITORY.increment_request_count(key)
+    env.redirect data["expanded_link"].as(String)
   end
 
   get "/:short_code/inspect.:format" do |env|
@@ -120,16 +104,14 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    redis = Redis.new(url: REDIS_URL)
-    request_key = env.params.url["short_code"].strip
     format = (env.params.url["format"] || "json").to_s.strip.downcase
+    request_key = env.params.url["short_code"].strip
 
-    data = {
-      "short_link"    => "#{SHORT_URL}/#{request_key}",
-      "expanded_link" => redis.get("#{request_key}:url"),
-      "request_count" => redis.get("#{request_key}:requests").to_s,
-      "report_date"   => Time.utc.to_s("%Y-%m-%d %H:%M:%S %:z"),
-    }
+    data = REPOSITORY.fetch_short_link(request_key)
+
+    if data.nil?
+      halt env, status_code: 404, response: "No short link found."
+    end
 
     case format
     when "csv"
@@ -157,16 +139,16 @@ module Mpngin
       halt env, status_code: 401, response: "Not authorized"
     end
 
-    redis = Redis.new(url: REDIS_URL)
-    key = env.params.url["short_code"].strip
-    result_url = redis.get("#{key}:url")
+    key = env.params.url["short_code"].to_s.strip
+    data = REPOSITORY.fetch_short_link(key)
+
     env.response.content_type = "text/plain; charset=utf-8"
 
-    if result_url.nil?
-      "¯\\_(ツ)_/¯"
-    else
-      redis.get("#{key}:requests")
+    if data.nil?
+      halt env, status_code: 404, response: "No short link found."
     end
+
+    data["request_count"]
   end
 
   serve_static false

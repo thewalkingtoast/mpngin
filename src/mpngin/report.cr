@@ -2,27 +2,30 @@ require "csv"
 
 module Mpngin
   class Report
+    getter store : Redis::PooledClient
+
     def initialize
       @result = [] of Hash(String, String | Nil)
+      @store = Repository.new.store
     end
 
     def call
       cursor = "0"
 
       loop do
-        cursor, short_link_keys = redis_client.scan(cursor, "*:url")
+        cursor, short_link_keys = store.scan(cursor, "*:url")
 
         short_link_keys.as(Array(Redis::RedisValue)).each do |key|
           request_key, _namespace = key.as(String).split(":")
 
           @result << {
             "short_link"    => "#{SHORT_URL}/#{request_key}",
-            "expanded_link" => redis_client.get("#{request_key}:url"),
-            "request_count" => redis_client.get("#{request_key}:requests").to_s,
+            "expanded_link" => store.get("#{request_key}:url"),
+            "request_count" => store.get("#{request_key}:requests").to_s,
           }
         end
 
-        break if cursor == "0"
+        break if cursor.as(String) == "0"
       end
 
       @result
@@ -38,10 +41,6 @@ module Mpngin
           csv.row link["short_link"], link["expanded_link"], link["request_count"]
         end
       end
-    end
-
-    private def redis_client
-      @redis_client ||= Redis.new(url: REDIS_URL)
     end
   end
 end
