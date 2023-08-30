@@ -2,20 +2,23 @@ require "dotenv"
 
 Dotenv.load(filename: ".env.test")
 
+require "uri/params"
 require "spec"
 require "spec-kemal"
 require "../src/mpngin"
 
-def make_redis
-  Redis.new(url: ENV["REDIS_URL"].to_s)
+REDIS_CONNECTION = Redis.new(url: ENV["REDIS_URL"].to_s)
+
+def redis
+  REDIS_CONNECTION
 end
 
 def flush_redis
-  make_redis.flushdb
+  redis.flushdb
 end
 
 def register_test_app
-  make_redis.set("#{test_app_key}:application", 1)
+  redis.set("#{test_app_key}:application", 1)
 end
 
 def test_app_authorization

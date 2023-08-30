@@ -26,7 +26,6 @@ describe "Mpngin" do
     context "with valid secret authorization" do
       it "generates and registers an application key" do
         # Make sure no app keys exist in Redis
-        redis = make_redis
         redis.keys("*:application").size.should eq(1)
 
         # Setup request headers
@@ -50,7 +49,6 @@ describe "Mpngin" do
     context "without valid authorization" do
       it "renders 401 not authorized" do
         # Make sure no app keys exist in Redis
-        redis = make_redis
         redis.keys("*:application").size.should eq(1)
 
         # Setup request headers
@@ -92,7 +90,6 @@ describe "Mpngin" do
           # Ensure the short code exists in Redis
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
-          redis = make_redis
           request_count = 0
           redis.set("#{short_code}:url", final_url)
           redis.set("#{short_code}:requests", request_count)
@@ -139,7 +136,6 @@ describe "Mpngin" do
           # Ensure the short code exists in Redis
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
-          redis = make_redis
           request_count = 0
           redis.set("#{short_code}:url", final_url)
           redis.set("#{short_code}:requests", request_count)
@@ -180,8 +176,8 @@ describe "Mpngin" do
           # Ensure the short code exists in Redis
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
-          redis = make_redis
           request_count = 0
+
           redis.set("#{short_code}:url", final_url)
           redis.set("#{short_code}:requests", request_count)
 
@@ -210,11 +206,6 @@ describe "Mpngin" do
   describe "making a new shortened URL request" do
     context "without valid authorization" do
       it "renders 401 not authorized" do
-        # Assert no request key exists in Redis
-        redis = make_redis
-        redis.keys("*:url").size.should eq(0)
-        redis.keys("*:requests").size.should eq(0)
-
         # Setup request headers
         headers = HTTP::Headers.new
         headers["Accept"] = "text/plain"
@@ -235,11 +226,6 @@ describe "Mpngin" do
     context "with valid authorization" do
       context "without a redirect URL" do
         it "renders 422 unprocessable entity" do
-          # Assert no request key exists in Redis
-          redis = make_redis
-          redis.keys("*:url").size.should eq(0)
-          redis.keys("*:requests").size.should eq(0)
-
           # Setup request headers
           headers = HTTP::Headers.new
           headers["Accept"] = "text/plain"
@@ -260,11 +246,6 @@ describe "Mpngin" do
 
       context "with a redirect url" do
         it "makes a short code that redirects" do
-          # Assert no request key exists in Redis
-          redis = make_redis
-          redis.keys("*:url").size.should eq(0)
-          redis.keys("*:requests").size.should eq(0)
-
           # Setup request headers
           headers = HTTP::Headers.new
           headers["Accept"] = "text/plain; charset=utf-8"
@@ -290,6 +271,40 @@ describe "Mpngin" do
           redis.get("#{namespace}:url").should eq("https://foobarbatz.com")
           redis.get("#{namespace}:requests").should eq("0")
         end
+
+        context "with a custom short url" do
+          it "makes a short code that redirects" do
+            # Setup request headers
+            headers = HTTP::Headers.new
+            headers["Accept"] = "text/plain; charset=utf-8"
+            headers["Authorization"] = test_app_authorization
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
+
+            # Make the request
+            params = URI::Params.build do |form|
+              form.add "redirect_url", "https://foobarbatz.com"
+              form.add "short_url", "https://thehorde.org"
+            end
+
+            post("/", headers: headers, body: params)
+
+            # Assert the response is okay
+            response.status_code.should eq(201)
+            response.content_type.should eq("text/plain")
+
+            # Assert response body is a URL.
+            matching = /http(s?)\:\/\/(.+).(.+)\/(.+){6}/i =~ response.body
+            matching.should eq(0)
+
+            # Grab short code off of response body.
+            short_code = response.body.split("/").pop
+            namespace = "thehorde.org:#{short_code}"
+
+            # Assert a key was made with the returned app key
+            redis.get("#{namespace}:url").should eq("https://foobarbatz.com")
+            redis.get("#{namespace}:requests").should eq("0")
+          end
+        end
       end
     end
   end
@@ -301,7 +316,6 @@ describe "Mpngin" do
       final_url = "https://foobarbatz.com"
       namespace = "#{hostname}:#{short_code}"
 
-      redis = make_redis
       redis.set("#{namespace}:url", final_url)
       redis.set("#{namespace}:requests", 0)
 
@@ -318,7 +332,6 @@ describe "Mpngin" do
       final_url = "https://foobarbatz.com"
       namespace = "#{hostname}:#{short_code}"
 
-      redis = make_redis
       redis.set("#{namespace}:url", final_url)
       redis.set("#{namespace}:requests", 0)
 
@@ -343,7 +356,6 @@ describe "Mpngin" do
       short_code = "abc123"
       namespace = "#{hostname}:#{short_code}"
 
-      redis = make_redis
       redis.del("#{namespace}:url")
       redis.del("#{namespace}:requests")
 
@@ -365,7 +377,6 @@ describe "Mpngin" do
         final_url = "https://foobarbatz.com"
         namespace = "#{hostname}:#{short_code}"
 
-        redis = make_redis
         redis.set("#{namespace}:url", final_url)
         redis.set("#{namespace}:requests", 0)
 
@@ -385,7 +396,6 @@ describe "Mpngin" do
         final_url = "https://foobarbatz.com"
         namespace = "#{hostname}:#{short_code}"
 
-        redis = make_redis
         redis.set("#{namespace}:url", final_url)
         redis.set("#{namespace}:requests", 1337)
 
@@ -408,7 +418,6 @@ describe "Mpngin" do
         short_code = "abc123"
         namespace = "#{hostname}:#{short_code}"
 
-        redis = make_redis
         redis.del("#{namespace}:url")
         redis.del("#{namespace}:requests")
 
@@ -438,7 +447,6 @@ describe "Mpngin" do
             final_url = "https://foobarbatz.com"
             namespace = "#{hostname}:#{short_code}"
 
-            redis = make_redis
             redis.set("#{namespace}:url", final_url)
             redis.set("#{namespace}:requests", 0)
 
@@ -462,7 +470,6 @@ describe "Mpngin" do
           namespace = "#{hostname}:#{short_code}"
           request_count = 1337
 
-          redis = make_redis
           redis.set("#{namespace}:url", final_url)
           redis.set("#{namespace}:requests", request_count)
 
@@ -493,7 +500,6 @@ describe "Mpngin" do
           final_url = "https://foobarbatz.com"
           namespace = "#{hostname}:#{short_code}"
 
-          redis = make_redis
           redis.set("#{namespace}:url", final_url)
           redis.set("#{namespace}:requests", 1337)
 
@@ -521,7 +527,6 @@ describe "Mpngin" do
           namespace = "#{hostname}:#{short_code}"
           request_count = 1337
 
-          redis = make_redis
           redis.set("#{namespace}:url", final_url)
           redis.set("#{namespace}:requests", request_count)
 

@@ -76,8 +76,9 @@ module Mpngin
       halt env, status_code: 422, response: "Must provide redirect_url param."
     end
 
+    short_url = env.params.body.fetch("short_url", SHORT_URL)
     short_link_data = REPOSITORY.store_short_link(
-      from: SHORT_URL, to: redirect_url
+      from: short_url, to: redirect_url
     )
 
     env.response.status_code = 201

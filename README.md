@@ -53,7 +53,7 @@ d48655ff210c3e9e4ed8f6ad4f1923a3
      -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
      -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' \
      --data-urlencode "redirect_url=https://www.nintendo.com"
-     
+
 # Your shiny new shortened redirect URL
 http://localhost:7001/541450
 ```
@@ -67,6 +67,21 @@ http://localhost:7001/541450
 
 # Request count response
 1337
+```
+
+### Dynamic Short Link Domain at Request Time
+
+You can change the top-level short link domain at request time via the `short_url` parameter when creating a short link. For example, if normally you use `mpng.in` for the short URL but want to use `thehorde.org` instead on a per-request basis, you can easily do so:
+
+```sh
+➜ curl -X "POST" "http://localhost:7001/" \
+     -H 'Authorization: bearer d48655ff210c3e9e4ed8f6ad4f1923a3' \
+     -H 'Content-Type: application/x-www-form-urlencoded; charset=utf-8' \
+     --data-urlencode "redirect_url=https://www.nintendo.com" \
+     --data-urlencode "short_url=https://thehorde.org"
+
+# Your shiny new shortened redirect URL with custom short domain
+https://thehorde.org/f1274e
 ```
 
 ## Link Inspect
