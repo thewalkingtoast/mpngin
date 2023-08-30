@@ -12,7 +12,7 @@ module Mpngin
     def store_application
       key_available = false
       until key_available
-        app_key = Random.new.hex(16)
+        app_key = Random::Secure.hex(16)
         key_available = store.exists(app_key) == 0
       end
 

@@ -5,7 +5,7 @@ A simple and fast URL shortener with built in stats. Requires Redis and assumes 
 ## Installation
 
 Copy `env.example` to `.env` and set the values. For the
-`SECRET_TOKEN`, try `Random.new.hex(32)`.
+`SECRET_TOKEN`, try `Random::Secure.hex(32)`.
 
 NOTE: If building in release mode for production, ensure `KEMAL_ENV` is uncommented in `.env` and set to `production`.
 
