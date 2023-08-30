@@ -84,6 +84,8 @@ You can change the top-level short link domain at request time via the `short_ur
 https://thehorde.org/f1274e
 ```
 
+*Note: Short codes are unique per short URL*
+
 ## Link Inspect
 
 To get more detailed information, you can also inspect a link to get info such as the expanded link and request count with a report timestamp in which ever format you need:
@@ -151,6 +153,8 @@ MPNGIN uses ECR to generate a plain table styled by [Bootstrap](https://getboots
 #### CSV Filename Customization
 
 You can change the file name provided for the downloaded CSV by setting `LINK_REPORT_CSV_NAME` ENV variable (without extension). See the `env.sample` file.
+
+*Note: All downstream applications get the same report. That is, short links are not scoped to downstream applications.*
 
 ## Testing
 
