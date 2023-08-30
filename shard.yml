@@ -29,6 +29,6 @@ targets:
   mpngin:
     main: src/mpngin.cr
 
-crystal: 1.9.0
+crystal: 1.9.2
 
 license: MIT
