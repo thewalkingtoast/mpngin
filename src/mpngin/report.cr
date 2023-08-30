@@ -16,12 +16,12 @@ module Mpngin
         cursor, short_link_keys = store.scan(cursor, "*:url")
 
         short_link_keys.as(Array(Redis::RedisValue)).each do |key|
-          request_key, _namespace = key.as(String).split(":")
+          short_url, request_key, _namespace = key.as(String).split(":")
 
           @result << {
-            "short_link"    => "#{SHORT_URL}/#{request_key}",
-            "expanded_link" => store.get("#{request_key}:url"),
-            "request_count" => store.get("#{request_key}:requests").to_s,
+            "short_link"    => "https://#{short_url}/#{request_key}",
+            "expanded_link" => store.get("#{short_url}:#{request_key}:url"),
+            "request_count" => store.get("#{short_url}:#{request_key}:requests").to_s,
           }
         end
 

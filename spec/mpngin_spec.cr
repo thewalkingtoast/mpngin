@@ -91,8 +91,8 @@ describe "Mpngin" do
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
           request_count = 0
-          redis.set("#{short_code}:url", final_url)
-          redis.set("#{short_code}:requests", request_count)
+          redis.set("#{hostname}:#{short_code}:url", final_url)
+          redis.set("#{hostname}:#{short_code}:requests", request_count)
 
           # Setup request headers
           headers = HTTP::Headers.new
@@ -137,8 +137,8 @@ describe "Mpngin" do
           short_code = "abc123"
           final_url = "https://foobarbatz.com"
           request_count = 0
-          redis.set("#{short_code}:url", final_url)
-          redis.set("#{short_code}:requests", request_count)
+          redis.set("#{hostname}:#{short_code}:url", final_url)
+          redis.set("#{hostname}:#{short_code}:requests", request_count)
 
           # Setup request headers
           headers = HTTP::Headers.new
@@ -178,8 +178,8 @@ describe "Mpngin" do
           final_url = "https://foobarbatz.com"
           request_count = 0
 
-          redis.set("#{short_code}:url", final_url)
-          redis.set("#{short_code}:requests", request_count)
+          redis.set("#{hostname}:#{short_code}:url", final_url)
+          redis.set("#{hostname}:#{short_code}:requests", request_count)
 
           # Setup request headers
           headers = HTTP::Headers.new
