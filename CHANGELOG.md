@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0]
+
+### Features
+- Allow the top-level short domain to be set at short link creation. See the [updated README](https://github.com/thewalkingtoast/mpngin#dynamic-short-link-domain-at-request-time).
+
+### Improvements
+- Interal refactoring
+- Simplify docker-compose.yml
+
+### Dependencies
+- Update to Crystal `1.9.2`
+
 ## [1.0.2]
 
 ### Dependencies
