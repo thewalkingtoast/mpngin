@@ -4,6 +4,7 @@
 /bin/
 /.shards/
 /.env
+/.env.production
 /bc_flags
 *.o
 *.a
