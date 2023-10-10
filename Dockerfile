@@ -1,41 +1,37 @@
-FROM crystallang/crystal:1.2.2 AS builder
-
-WORKDIR /app
-
-COPY . .
+FROM crystallang/crystal:1.9.2 as builder
 
 ARG APP_ENV=production
+ENV KEMAL_ENV=${APP_ENV}
 
-RUN shards install --production && \
-    echo "KEMAL_ENV=${APP_ENV}" >> .env && \
-    KEMAL_ENV=${APP_ENV} crystal build --release src/mpngin.cr;
+WORKDIR /build
 
-FROM debian:stable-slim
+COPY shard.yml shard.lock ./
+RUN echo "KEMAL_ENV=${APP_ENV}" >> .env && \
+    shards install --frozen --production
 
+COPY . .
+RUN shards build --production --release --no-debug --static --progress
+
+FROM debian:buster-slim as production
+
+ARG APP_ENV=production
 ARG PORT=7001
-ENV LANG C.UTF-8
-ENV DEBIAN_FRONTEND noninteractive
-
-EXPOSE ${PORT}
+ENV KEMAL_ENV=${APP_ENV}
 
 WORKDIR /app
-
-COPY --from=builder /app/mpngin .
-COPY --from=builder /app/.env .
-
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y libssl1.1 libevent-2.1-7 && \
-    apt-get auto-remove -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    useradd -m app-user && \
-    chown -R app-user /home/app-user && \
-    echo "PORT=${PORT}" >> .env && \
-    chown -R app-user .;
-
-USER app-user
 
 STOPSIGNAL SIGQUIT
 
-ENTRYPOINT [ "./mpngin" ]
-CMD [ "./mpngin" ]
+COPY --from=builder /build/bin/mpngin .
+COPY .env.production .env
+
+RUN useradd -m app-user && \
+    chown -R app-user /home/app-user && \
+    echo "PORT=${PORT}" >> .env && \
+    echo "KEMAL_ENV=${KEMAL_ENV}" >> .env && \
+    chown -R app-user /app;
+
+USER app-user
+
+ENTRYPOINT ["./mpngin"]
+CMD ["./mpngin"]

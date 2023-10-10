@@ -5,7 +5,7 @@ A simple and fast URL shortener with built in stats. Requires Redis and assumes 
 ## Installation
 
 Copy `env.example` to `.env` and set the values. For the
-`SECRET_TOKEN`, try `Random::Secure.hex(32)`.
+`SECRET_TOKEN` you can generate one with `$ crystal eval "puts Random::Secure.hex(32)"`.
 
 NOTE: If building in release mode for production, ensure `KEMAL_ENV` is uncommented in `.env` and set to `production`.
 
@@ -21,14 +21,14 @@ For production, make a release build with `KEMAL_ENV` uncommented in `.env` and 
 
 ```sh
 # Assumes .env file is correctly filled out, including KEMAL_ENV=production
-crystal build --release src/mpngin.cr
+shards build --production --release --static --progress
 ```
 
 The `.env` must accompany the built binary at the same filesystem level. Example production tree:
 
 ```
 mpngin
-|_ mpgin (binary)
+|_ mpngin (binary)
 |_ .env
 ```
 
