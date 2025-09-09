@@ -2,33 +2,33 @@ name: mpngin
 version: 1.1.1
 
 authors:
-  - Adam Radabaugh <adam@mediaping.net>
+	- Adam Radabaugh <adam@mediaping.net>
 
 dependencies:
-  dotenv:
-    github: gdotdesign/cr-dotenv
-    branch: master
-  kemal:
-    github: kemalcr/kemal
-  redis:
-    github: stefanwille/crystal-redis
-    branch: master
+	dotenv:
+		github: gdotdesign/cr-dotenv
+		branch: master
+	kemal:
+		github: kemalcr/kemal
+	redis:
+		github: stefanwille/crystal-redis
+		branch: master
 
 development_dependencies:
-  ameba:
-    github: crystal-ameba/ameba
-    branch: master
-  spec-kemal:
-    github: kemalcr/spec-kemal
-    branch: master
-  timecop:
-    github: crystal-community/timecop.cr
-    branch: master
+	ameba:
+		github: crystal-ameba/ameba
+		branch: master
+	spec-kemal:
+		github: kemalcr/spec-kemal
+		branch: master
+	timecop:
+		github: crystal-community/timecop.cr
+		branch: master
 
 targets:
-  mpngin:
-    main: src/mpngin.cr
+	mpngin:
+		main: src/mpngin.cr
 
-crystal: 1.9.2
+crystal: 1.16.3
 
 license: MIT

@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.9.2 as builder
+FROM crystallang/crystal:1.16 as builder
 
 ARG APP_ENV=production
 ENV KEMAL_ENV=${APP_ENV}

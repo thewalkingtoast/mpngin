@@ -2,23 +2,23 @@ version: 2.0
 shards:
   ameba:
     git: https://github.com/crystal-ameba/ameba.git
-    version: 1.4.3+git.commit.a33f98624a30a62cdf03affe32e7469ab2287f9f
+    version: 1.7.0-dev+git.commit.fe12a7566ac6c0f5b7b63ad07b89fb17a5ebf6f7
 
   backtracer:
     git: https://github.com/sija/backtracer.cr.git
-    version: 1.2.2
+    version: 1.2.4
 
   dotenv:
     git: https://github.com/gdotdesign/cr-dotenv.git
-    version: 1.0.0+git.commit.cb70a7111043fa37e09dce3e4b6db17fd5c6ce54
+    version: 1.0.0+git.commit.8bedfcf5f127c29d85687c7212a47d22cba296a9
 
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
-    version: 0.3.1
+    version: 0.5.0
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 1.4.0
+    version: 1.7.1
 
   pool:
     git: https://github.com/ysbaddaden/pool.git
