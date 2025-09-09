@@ -12,3 +12,5 @@
 /mpngin.dwarf
 /scratch.cr
 .crystal
+.idea
+.vscode
