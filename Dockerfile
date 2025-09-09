@@ -1,4 +1,4 @@
-FROM crystallang/crystal:1.16 as builder
+FROM crystallang/crystal:1.16 AS builder
 
 ARG APP_ENV=production
 ENV KEMAL_ENV=${APP_ENV}
@@ -12,18 +12,18 @@ RUN echo "KEMAL_ENV=${APP_ENV}" >> .env && \
 COPY . .
 RUN shards build --production --release --no-debug --static --progress
 
-FROM debian:buster-slim as production
+FROM debian:buster-slim AS production
 
 ARG APP_ENV=production
 ARG PORT=7001
 ENV KEMAL_ENV=${APP_ENV}
+ENV PORT=${PORT}
 
 WORKDIR /app
 
 STOPSIGNAL SIGQUIT
 
 COPY --from=builder /build/bin/mpngin .
-COPY .env.production .env
 
 RUN useradd -m app-user && \
     chown -R app-user /home/app-user && \
@@ -32,6 +32,8 @@ RUN useradd -m app-user && \
     chown -R app-user /app;
 
 USER app-user
+
+EXPOSE ${PORT}
 
 ENTRYPOINT ["./mpngin"]
 CMD ["./mpngin"]
